@@ -176,46 +176,6 @@ module.exports = function(grunt) {
         ]
       }
     },
-    jasmine : {
-      testProd: {
-        src: '<%=paths.build%>/js/hopscotch.min.js',
-        options: {
-          keepRunner: false,
-          specs:  ['<%=paths.test%>/js/*.js'],
-          vendor: ['node_modules/jquery/dist/jquery.min.js'],
-          styles: ['<%=paths.build%>/css/hopscotch.min.css']
-        }
-      },
-      testDev: {
-        src: '<%=paths.build%>/js/hopscotch.js',
-        options: {
-          keepRunner: false,
-          specs:  ['<%=paths.test%>/js/*.js'],
-          vendor: ['node_modules/jquery/dist/jquery.min.js'],
-          styles: ['<%=paths.build%>/css/hopscotch.css']
-        }
-      },
-      coverage: {
-        src: '<%=paths.build%>/js/hopscotch.js',
-        options: {
-          keepRunner: false,
-          specs:  ['<%=paths.test%>/js/*.js'],
-          vendor: ['node_modules/jquery/dist/jquery.min.js'],
-          styles: ['<%=paths.build%>/css/hopscotch.css'],
-          template: require('grunt-template-jasmine-istanbul'),
-          templateOptions: {
-            coverage: '<%=paths.build%>/coverage/coverage.json',
-            report: '<%=paths.build%>/coverage',
-            thresholds: {
-              lines: 80,
-              statements: 80,
-              branches: 65,
-              functions: 80
-            }
-          }
-        }
-      }
-    },
     connect: {
       testServer: {
         options: {
@@ -262,7 +222,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -282,28 +241,17 @@ module.exports = function(grunt) {
     ['jshint:lib', 'clean:build', 'copy:build', 'jst:compile', 'includereplace:jsSource', 'uglify:build', 'less']
   );
 
-  grunt.registerTask(
-    'test',
-    'Build hopscotch and run unit tests',
-    ['build','jasmine:testProd', 'jasmine:coverage']
-  );
-
   grunt.registerTask  (
     'dev',
     'Start test server to allow debugging unminified hopscotch code in a browser',
-    ['build', 'jasmine:testDev:build', 'log:dev', 'connect:testServer']
+    ['build', 'log:dev', 'connect:testServer']
   );
-
-  grunt.registerTask(
-    'coverage',
-    'log:coverage',
-    ['build', 'jasmine:coverage', 'log:coverage']);
 
   //release tasks
   grunt.registerTask(
     'buildRelease',
     'Build hopscotch for release (update files in dist directory and create tar.gz and zip archives of the release)',
-    ['test', 'clean:dist', 'copy:releaseWithBanner', 'copy:release', 'compress']
+    ['clean:dist', 'copy:releaseWithBanner', 'copy:release', 'compress']
   );
   grunt.registerTask(
     'releasePatch',

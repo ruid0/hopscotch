@@ -1,0 +1,24 @@
+<%
+  function optEscape(str, unsafe){
+    if(unsafe){
+      return _.escape(str);
+    }
+    return str;
+  }
+%>
+<div class="custom-bubble-container" style="width: <%= step.width %>px; padding: <%= step.padding %>px;">
+  <div class="custom-bubble-content">
+    <% if(step.title !== ''){ %><h3 class="custom-title"><%= optEscape(step.title, tour.unsafe) %></h3><% } %>
+    <% if(step.content  !== ''){ %><div class="custom-content"><%= optEscape(step.content, tour.unsafe) %></div><% } %>
+  </div>
+  <div class="custom-actions">
+    <% if(buttons.showPrev){ %><button class="custom-nav-button prev custom-prev"><%= i18n.prevBtn %></button><% } %>
+    <% if(buttons.showCTA){ %><button class="custom-nav-button next custom-cta"><%= buttons.ctaLabel %></button><% } %>
+    <% if(buttons.showNext){ %><button class="custom-nav-button next custom-next"><%= i18n.nextBtn %></button><% } %>
+  </div>
+  <% if(buttons.showClose){ %><button class="custom-bubble-close custom-close"><%= i18n.closeTooltip %></button><% } %>
+</div>
+<div class="custom-bubble-arrow-container hopscotch-arrow">
+  <div class="custom-bubble-arrow-border"></div>
+  <div class="custom-bubble-arrow"></div>
+</div>
